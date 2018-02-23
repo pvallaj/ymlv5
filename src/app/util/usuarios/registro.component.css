@@ -1,0 +1,54 @@
+:host {
+  margin:5px;
+}
+.modo{
+  width: 90%;
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+  height: 3rem;
+}
+.usuario{
+  font-size: 0.7rem;
+  width: 100%;
+  padding:5px;
+}
+.modal-header{
+  padding:5px 5px 5px 10px;
+  background-color: #003B46;
+  color: white;
+}
+.modal-title{
+  font-size: 12px;
+}
+.modal-body {
+    position: relative;
+    padding: 10px;
+    height: 100px;
+}
+.modal-footer{
+  background-color:#003B46;
+  padding: 5px 10px;
+}
+
+.formaUsuario{
+  width: 90%;
+  border: 1px solid rgba(128, 128, 128, 0.45);
+  margin: 0 auto;
+  background-color: rgba(255,255,255,0.5);
+}
+
+
+/****Estilos de login****/
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 2px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 2px solid #a94442; /* red */
+}
+
+.alert-danger{  
+    margin: 5px 10px;
+}

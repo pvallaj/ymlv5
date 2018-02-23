@@ -1,0 +1,89 @@
+
+<button *ngIf="(su.estadoSesion=='Conectado' )" 
+		fxLayout="row" fxLayoutAlign="space-around center"
+		mat-raised-button color="primary"		
+		(click)="salir()"
+		class="usuario">
+	{{su.usuarioActivo}} (Salir) 
+</button>
+<div *ngIf="(su.estadoSesion!='Conectado' )" >
+		<mat-radio-group class="modo" [(ngModel)]="tipo" fxLayout="row" fxLayoutAlign="space-around center">
+		  <mat-radio-button value="autenticar"  >Autenticar</mat-radio-button>
+		  <mat-radio-button value="registrar">Registrar</mat-radio-button>
+		</mat-radio-group>
+		<div class="formaUsuario"   *ngIf="(tipo=='autenticar')"
+									fxLayout="column" fxLayoutAlign="center stretch">
+			<mat-spinner *ngIf="procesoActivo"></mat-spinner>
+		  	<form *ngIf="!procesoActivo" #registroForma="ngForm" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+		  		<div class="modal-header">
+			    	<h3 class="modal-title">Solo personal autorizado</h3>
+			  	</div>
+		      	<mat-form-field   >
+				    <input matInput  
+				    		id="usuario" required [(ngModel)]="usuario" name="usuario" 
+				    		placeholder="Nombre de Usuario"  
+				    		type="email" >
+				</mat-form-field>
+
+		    	<mat-form-field >
+				  <input 	matInput
+				  			type="password" id="password" required 
+				  			[(ngModel)]="password" name="password" 
+				  			placeholder="Contraseña" 
+				  			>
+				</mat-form-field>
+			  	<!--div *ngIf="su.mensajeError!=''" class="alert alert-danger">
+			  		{{su.mensajeError}}
+			  	</div-->
+			  	<div class="modal-footer" fxLayout="row" fxLayoutAlign="space-around center">
+			  		<button mat-raised-button color="primary"
+			  			[disabled]="!registroForma.form.valid" (click)="autenticar()">Acceder</button>
+			  		<button mat-raised-button color="primary"
+			  			 (click)="autenticarGoogle()">Google</button>
+			  	</div>
+		  	</form>
+		</div>	  	
+
+		<div class="formaUsuario"   *ngIf="(tipo=='registrar')"
+									fxLayout="column" fxLayoutAlign="center stretch">
+			<mat-spinner *ngIf="procesoActivo"></mat-spinner>
+		  	<form *ngIf="!procesoActivo" #registroForma="ngForm" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+		  		<div class="modal-header">
+			    	<h3 class="modal-title">Registro de nuevo usuario. </h3>
+			  	</div>
+			  	<mat-form-field >
+				    <input matInput  
+				    		 required [(ngModel)]="nombre" name="nombre" 
+				    		placeholder="Nombre completo" >
+				</mat-form-field>
+		      	<mat-form-field >
+				    <input matInput  
+				    		required [(ngModel)]="usuario" name="usuario"  
+				    		placeholder="Correo electronico (Usuario)"  
+				    		type="email">
+				</mat-form-field>
+
+		    	<mat-form-field >
+				  <input 	matInput
+				  			type="password" required 
+				  			[(ngModel)]="password" name="password" 
+				  			placeholder="Contraseña (Al menos 6 caracteres)" 
+				  			>
+				</mat-form-field>
+				<mat-form-field >
+				  <input 	matInput
+				  			type="password"  required 
+				  			[(ngModel)]="repeticion" name="passwordr" 
+				  			placeholder="Repetir Contraseña" 
+				  			>
+				</mat-form-field>
+			  	<!--div *ngIf="su.mensajeError!=''" class="alert alert-danger">
+			  		{{su.mensajeError}}
+			  	</div-->
+			  	<div class="modal-footer">
+			  		<button mat-raised-button color="primary"
+			  			[disabled]="!registroForma.form.valid || (repeticion!=password)" (click)="registrarUsuario()">Registrar nuevo usuario</button>
+			  	</div>
+		  	</form>
+		</div>
+<div>

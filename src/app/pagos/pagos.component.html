@@ -1,0 +1,89 @@
+
+<div fxLayout="column" flexLaoutAlign="space-around centor">
+	<div fxLayout="row" fxLayoutAlign="space-around centor" >
+		<form (ngSubmit)="agregar(frm)" #frm="ngForm"  fxFlex="60" class="mNuevo">
+			<mat-form-field >
+			  <input matInput required [matDatepicker]="picker" placeholder="día" [(ngModel)]="fecha" name="fecha" id="fecha" [disabled]="modoEdicion">
+			  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			  <mat-datepicker #picker ></mat-datepicker> 
+			</mat-form-field> 
+			<mat-form-field>
+				<mat-select placeholder="Tipo" name="t_pago"  [(ngModel)]="t_pago" [disabled]="modoEdicion">
+				    <mat-option required  *ngFor="let tp of cs.cPagos" [value]="tp.id">
+				      {{ tp.descripcion }}
+				    </mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field class="example-full-width">
+			    <input matInput required name="monto" id="monto" placeholder="Monto" value="0" type="number" [(ngModel)]="monto" [disabled]="modoEdicion">
+			</mat-form-field>
+			<button mat-raised-button color="primary" [disabled]="modoEdicion">Agregar</button>
+		</form>
+	</div>
+	
+	<div  fxLayout="row" fxLayoutAlign="space-around centor">
+		<div fxFlex *ngIf="dsPagos" fxFlex="60">
+			<mat-table #table [dataSource]="dsPagos">
+				<ng-container matColumnDef="t_pago">
+				  <mat-header-cell *matHeaderCellDef> TIPO </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" > 
+					  	<mat-select placeholder="Tipo" name="t_pago"  [(ngModel)]="t_pagoEdicion" *ngIf="editando==element.id">
+						    <mat-option required  *ngFor="let tp of cs.cPagos" [value]="tp.id">
+						      {{ tp.descripcion }}
+						    </mat-option>
+						</mat-select>
+						<div *ngIf="editando!=element.id">{{element.t_pago | tipoPago}} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="fecha">
+				  <mat-header-cell *matHeaderCellDef> FECHA </mat-header-cell>
+				  <mat-cell *matCellDef="let element"> 
+				   <mat-form-field *ngIf="editando==element.id">
+					  <input matInput required [matDatepicker]="picker2" placeholder="día" [(ngModel)]="fechaEdicion" name="fechaEdicion" id="fechaEdicion" >
+					  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+					  <mat-datepicker #picker2 ></mat-datepicker> 
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.fecha|date:'short'}} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="monto">
+				  <mat-header-cell *matHeaderCellDef> MONTO </mat-header-cell>
+				  <mat-cell *matCellDef="let element" > 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="monto" id="monto" placeholder="Monto" value="element.monto" type="number" [(ngModel)]="montoEdicion">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.monto | currency:'':'symbol':'.2-2'}} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="accion">
+				  <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+				  <mat-cell *matCellDef="let element"> 
+				  	<button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="eliminar(element)">delete_forever</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="iniciarEdicion(element)">edit</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="guardarEdicion(element)">save</mat-icon>
+					 </button>
+					<button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="cancelarEdicion(element)">cancel</mat-icon>
+					 </button>
+				  </mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="camposDesplegar"></mat-header-row>
+		        <mat-row *matRowDef="let row; columns: camposDesplegar;" (click)="seleccionado(row)"></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+			           [pageSize]="10"
+			           [showFirstLastButtons]="true">
+			</mat-paginator>  
+		</div>
+	</div>	
+</div>
+  
