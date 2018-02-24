@@ -15,7 +15,10 @@
 				</mat-select>
 			</mat-form-field>
 			<mat-form-field class="example-full-width">
-			    <input matInput required name="monto" id="monto" placeholder="Monto" value="0" type="number" [(ngModel)]="monto" [disabled]="modoEdicion">
+			    <input matInput required name="monto" id="monto" placeholder="Monto:" value="0" type="number" [(ngModel)]="monto" [disabled]="modoEdicion">
+			</mat-form-field>
+			<mat-form-field class="example-full-width">
+			    <input matInput required name="nota" id="nota" placeholder="Nota:"  [(ngModel)]="nota" [disabled]="modoEdicion">
 			</mat-form-field>
 			<button mat-raised-button color="primary" [disabled]="modoEdicion">Agregar</button>
 		</form>
@@ -53,6 +56,15 @@
 					    <input matInput required name="monto" id="monto" placeholder="Monto" value="element.monto" type="number" [(ngModel)]="montoEdicion">
 					</mat-form-field>
 				  	<div *ngIf="editando!=element.id">{{element.monto | currency:'':'symbol':'.2-2'}} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="nota">
+				  <mat-header-cell *matHeaderCellDef> NOTA </mat-header-cell>
+				  <mat-cell *matCellDef="let element" > 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="nota" id="nota" placeholder="Nota" value="element.nota"  [(ngModel)]="notaEdicion">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.nota }} </div>
 				  </mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="accion">

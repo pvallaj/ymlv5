@@ -26,18 +26,18 @@ export class PagosComponent implements OnInit {
 	private pagosColl: AngularFirestoreCollection<Pago>;
   	private pagosObs: Observable<Pago[]>;
   	private dsPagos:MatTableDataSource<Pago>=new MatTableDataSource();
-  	private camposDesplegar:string[]=['t_pago','fecha','monto', 'accion'];
+  	private camposDesplegar:string[]=['t_pago','fecha','monto', 'nota', 'accion'];
   	@ViewChild(MatPaginator) paginator: MatPaginator;
 
     private fecha:Date=new Date();
     private t_pago:number=2;
-    private monto:number=10;
-    private nota:number=10;
+    private monto:number=0;
+    private nota:string="";
 
     private fechaEdicion:Date=new Date();
     private t_pagoEdicion:number=2;
-    private montoEdicion:number=10;
-    private notaEdicion:number=10;
+    private montoEdicion:number=0;
+    private notaEdicion:string="";
 
     editando="";
     private modoEdicion=false;
@@ -87,6 +87,7 @@ export class PagosComponent implements OnInit {
     this.t_pagoEdicion=registro.t_pago;
     this.montoEdicion=registro.monto;
     this.fechaEdicion=registro.fecha;
+    this.notaEdicion=registro.nota;
     this.modoEdicion=true;
 	}
   cancelarEdicion() {
@@ -99,7 +100,7 @@ export class PagosComponent implements OnInit {
 	}
 	guardarEdicion(){
     this.pagosColl.doc('/'+this.editando).set(
-      {fecha:this.fechaEdicion, t_pago:this.t_pagoEdicion, monto:this.montoEdicion}
+      {fecha:this.fechaEdicion, t_pago:this.t_pagoEdicion, monto:this.montoEdicion, nota: this.notaEdicion}
     );
   }
 }
