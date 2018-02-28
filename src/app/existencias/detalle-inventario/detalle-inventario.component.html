@@ -1,0 +1,111 @@
+<div fxLayout="column" flexLaoutAlign="space-around centor">
+	<div fxLayout="row" fxLayoutAlign="space-around centor" >
+		<form (ngSubmit)="agregar(frm)" #frm="ngForm"  fxLayout="row" fxLayoutAlign="space-around centor" fxFlex="80" class="mNuevo">
+			<mat-form-field fxFlex="60">
+				<mat-select placeholder="Tipo" name="producto"  [(ngModel)]="producto" [disabled]="modoEdicion">
+				    <mat-option required  *ngFor="let tp of cs.cProductos" [value]="tp.id">
+				      {{ tp.descripcion }}
+				    </mat-option>
+				</mat-select>
+			</mat-form-field>
+			<button mat-raised-button color="primary" [disabled]="modoEdicion">Agregar</button>
+			<button mat-raised-button color="accent" [disabled]="modoEdicion" (click)="terminarEdicion()">Terminar</button>
+		</form>
+	</div>
+	
+	<div  fxLayout="row" fxLayoutAlign="space-around centor">
+		<div fxFlex *ngIf="dsInventario" fxFlex="80">
+			<mat-table #table [dataSource]="dsInventario">
+				<ng-container matColumnDef="id_producto">
+				  <mat-header-cell *matHeaderCellDef fxFlex> Producto </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" fxFlex> 
+					  	{{element.id_producto | tipoProducto}}
+				  </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="vitrina">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> Vitrina </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="vitrina" id="vitrina" value="element.vitrina" type="number" [(ngModel)]="vitrina">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.vitrina }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="local">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> Local </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="local" id="local" value="element.local" type="number" [(ngModel)]="local">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.local }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="almacen">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> almacen </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="almacen" id="almacen" value="element.local" type="number" [(ngModel)]="almacen">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.almacen }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="existencia_anterior" >
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> anterior </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="existencia_anterior" id="existencia_anterior" value="element.local" type="number" [(ngModel)]="existencia_anterior">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.existencia_anterior }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="ventas">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> ventas </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="ventas" id="ventas" value="element.local" type="number" [(ngModel)]="ventas">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.ventas }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="consolidado">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px">  consolidado </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="consolidado" id="consolidado" value="element.local" type="number" [(ngModel)]="consolidado">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.consolidado }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="accion">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> Acción </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="eliminar(element)">delete_forever</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="iniciarEdicion(element)">edit</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="guardarEdicion(element)">save</mat-icon>
+					 </button>
+					<button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="cancelarEdicion(element)">cancel</mat-icon>
+					 </button>
+				  </mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="cdInventario"></mat-header-row>
+		        <mat-row *matRowDef="let row; columns: cdInventario;" (click)="seleccionado(row)"></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+			           [pageSize]="10"
+			           [showFirstLastButtons]="true">
+			</mat-paginator>  
+		</div>
+	</div>	
+</div>
+  

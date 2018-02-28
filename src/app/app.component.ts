@@ -11,11 +11,11 @@ import { SesionUsuario,
 })
 export class AppComponent implements OnInit{
 
-  private mostratMenu:boolean=false;
-	constructor (private su:SesionUsuario, private cnx:ConexionService){
+  	public mostratMenu:boolean=false;
+	constructor (public su:SesionUsuario, private cnx:ConexionService){
     
 	}
-  ngOnInit(){}
+  	ngOnInit(){}
   
 
 }

@@ -9,6 +9,7 @@ import { FlexLayoutModule } 		from '@angular/flex-layout';
 import { Registro } 		from './usuarios/registro.component';
 
 
+
 @NgModule({
 	declarations: [Registro],
 	imports:[CommonModule, BrowserModule, FormsModule, MaterialModule, FlexLayoutModule],

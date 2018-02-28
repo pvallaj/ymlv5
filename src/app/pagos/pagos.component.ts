@@ -1,12 +1,16 @@
 import { Component, OnInit, AfterViewInit, ViewChild } 			from '@angular/core';
 import { AngularFirestore, 
-		 AngularFirestoreCollection } 	from 'angularfire2/firestore';
+		     AngularFirestoreCollection } 	from 'angularfire2/firestore';
 import { MatTableDataSource, 
-		 MatPaginator } from '@angular/material';
+		     MatPaginator,
+         MatDialog } from '@angular/material';
+
 import { Observable } 					from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {  } from '../util';
 
 import { CatalogosService } from '../servicios/catalogos.service';
+import { Mensaje }           from '../util/mensaje/mensaje.component';
 export interface Pago{
 	t_pago:number,
 	monto:number,
@@ -25,25 +29,26 @@ export interface PagoId extends Pago{id:string};
 export class PagosComponent implements OnInit {
 	private pagosColl: AngularFirestoreCollection<Pago>;
   	private pagosObs: Observable<Pago[]>;
-  	private dsPagos:MatTableDataSource<Pago>=new MatTableDataSource();
-  	private camposDesplegar:string[]=['t_pago','fecha','monto', 'nota', 'accion'];
+  	public dsPagos:MatTableDataSource<Pago>=new MatTableDataSource();
+  	private camposDesplegar:string[]=['fecha','t_pago','monto', 'nota', 'accion'];
   	@ViewChild(MatPaginator) paginator: MatPaginator;
 
-    private fecha:Date=new Date();
-    private t_pago:number=2;
-    private monto:number=0;
-    private nota:string="";
+    public fecha:Date=new Date();
+    public t_pago:number=2;
+    public monto:number=0;
+    public nota:string="";
 
-    private fechaEdicion:Date=new Date();
-    private t_pagoEdicion:number=2;
-    private montoEdicion:number=0;
-    private notaEdicion:string="";
+    public fechaEdicion:Date=new Date();
+    public t_pagoEdicion:number=2;
+    public montoEdicion:number=0;
+    public notaEdicion:string="";
 
     editando="";
-    private modoEdicion=false;
+    public modoEdicion=false;
 
   	constructor(private afa:AngularFirestore
-                ,private cs:CatalogosService) { 
+                ,public cs:CatalogosService
+                ,private dlg:MatDialog) { 
   		this.pagosColl = afa.collection<Pago>('pagos');
     	this.pagosObs=this.pagosColl.snapshotChanges().map(
     		actions => {
@@ -95,8 +100,17 @@ export class PagosComponent implements OnInit {
     this.modoEdicion=false;
   }
 	eliminar(elemento) {    
-	    console.log(elemento);
-      this.pagosColl.doc('/'+elemento.id).delete();
+	    //console.log(elemento);
+      //this.pagosColl.doc('/'+elemento.id).delete();
+      let dialogRef = this.dlg.open(Mensaje, {
+        width: '350px',
+        data: { titulo:'Pagos', mensaje:'Se eliminara el registro de forma definitiva. Desea continuar?' }
+      });
+
+      dialogRef.afterClosed().subscribe(res => {
+        if(res=='ACEPTAR')
+          this.pagosColl.doc('/'+elemento.id).delete();
+      });
 	}
 	guardarEdicion(){
     this.pagosColl.doc('/'+this.editando).set(

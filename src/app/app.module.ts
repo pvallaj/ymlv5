@@ -14,6 +14,7 @@ import { environment }          from '../environments/environment';
 import { AppComponent } 		    from './app.component';
 import { InicioComponent } 		  from './inicio/inicio.component';
 import { UtilModule }           from './util/UtilModule.module';
+import { Mensaje }              from './util/mensaje/mensaje.component';
 import { ConexionService
          ,UtilS
          ,AuthService
@@ -22,15 +23,19 @@ import { ConexionService
 import { AngularFirestore }   from 'angularfire2/firestore';
 
 import { PagosComponent }          from './pagos/pagos.component';
-import { CatalogosService }          from './servicios/catalogos.service';
-import { TipoPago } from './util/tipo-pago.pipe';
+import { Inventario }              from './existencias/inventario/inventario.component';
+import { DetalleInventario }       from './existencias/detalle-inventario/detalle-inventario.component';
+import { CatalogosService }        from './servicios/catalogos.service';
+import { TipoPago }                from './util/tipo-pago.pipe';
+import { TipoProducto }            from './util/tipo-producto.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     InicioComponent,
-    PagosComponent,
-    TipoPago
+    PagosComponent, Inventario, DetalleInventario,
+    TipoPago, TipoProducto
+    Mensaje
   ],
   imports: [
     BrowserModule, MaterialModule, HttpModule, UtilModule, FormsModule, BrowserAnimationsModule,
@@ -38,19 +43,20 @@ import { TipoPago } from './util/tipo-pago.pipe';
     RouterModule.forRoot([
             { path: '',                  component: InicioComponent  },
             { path: 'inicio',            component: InicioComponent },
-            { path: 'pagos',             component: PagosComponent }
-           /* { path: 'nomina',            component: NominaComponent ,   canActivate:[Privada]},
-            { path: 'pedidos',           component: PedidosComponent,   canActivate:[Privada]  },
-            { path: 'carga',             component: CargaComponent,     canActivate:[Privada]  },
-            { path: 'confronta',         component: ConfrtDiaComponent, canActivate:[Privada]  },
-            { path: 'gastos',            component: GastosComponent,    canActivate:[Privada]  }*/
+            { path: 'pagos',             component: PagosComponent },
+            { path: 'inventario',        component: Inventario },
+            { path: 'detinventario',     component: DetalleInventario }
+           /* { path: 'nomina',            component: NominaComponent ,   canActivate:[Privada]},*/
           ])
   ],
   providers: [
      AngularFirestore, CatalogosService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[Mensaje]
 })
 export class AppModule {
-    constructor(private cs:CatalogosService){}
+    constructor(private cs:CatalogosService){
+      cs.cargarCatalogo(['t_pago','producto']);
+    }
  }

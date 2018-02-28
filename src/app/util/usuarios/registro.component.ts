@@ -35,7 +35,7 @@ export class Registro {
           private _router:Router, 
           private afa:AngularFireAuth,
           private afs:AngularFirestore,
-          private su:SesionUsuario) {
+          public su:SesionUsuario) {
   }
   
   autenticarGoogle(){

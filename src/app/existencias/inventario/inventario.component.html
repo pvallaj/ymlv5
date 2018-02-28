@@ -1,0 +1,96 @@
+
+<div fxLayout="column" flexLaoutAlign="space-around centor" *ngIf="!modoDetalle">
+	<div  fxLayout="row" fxLayoutAlign="space-around centor" >
+		<form (ngSubmit)="agregar(frm)" #frm="ngForm"  fxFlex="60" class="mNuevo">
+			<mat-form-field >
+			  <input matInput required [matDatepicker]="picker" placeholder="día" [(ngModel)]="nuevo.fecha" name="fecha" id="fecha" [disabled]="modoEdicion">
+			  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			  <mat-datepicker #picker ></mat-datepicker> 
+			</mat-form-field> 
+			<mat-form-field >
+				<input matInput required [matDatepicker]="picker2" placeholder="día confronta" [(ngModel)]="nuevo.fecha_confronta" name="fecha_confronta" id="fecha_confronta" [disabled]="'true'">
+			  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+			  <mat-datepicker #picker2 ></mat-datepicker>
+			</mat-form-field >
+			<mat-form-field class="example-full-width">
+			    <input matInput required name="nota" id="nota" placeholder="Nota:"  [(ngModel)]="nuevo.nota" [disabled]="modoEdicion">
+			</mat-form-field>
+			<button mat-raised-button color="primary" [disabled]="modoEdicion">Agregar</button>
+		</form>
+	</div>
+	
+	<div  fxLayout="row" fxLayoutAlign="space-around centor">
+		<div fxFlex *ngIf="dsInventario" fxFlex="60">
+			<mat-table #table [dataSource]="dsInventario">
+				<ng-container matColumnDef="fecha">
+				  <mat-header-cell *matHeaderCellDef> FECHA </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" > 
+					  	<div *ngIf="editando==element.id" fxLayout="row" fxLayoutAlign="space-around">
+					  		<input matInput required [matDatepicker]="pickerEd1"  [(ngModel)]="editable.fecha" name="fechaEd1" id="fechaEd1" >
+						  	<mat-datepicker-toggle matSuffix [for]="pickerEd1"></mat-datepicker-toggle>
+						  	<mat-datepicker #pickerEd1 ></mat-datepicker> 
+						</div>
+				  		<div *ngIf="editando!=element.id">{{element.fecha|date:'short'}} </div>
+				  	</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="fecha_confronta">
+				  <mat-header-cell *matHeaderCellDef> CONFRONTA </mat-header-cell>
+				  <mat-cell *matCellDef="let element"> 
+				   		<div *ngIf="editando==element.id" fxLayout="row" fxLayoutAlign="space-around">
+					  		<input matInput required [matDatepicker]="pickerEd2" [(ngModel)]="editable.fecha_confronta" name="fechaEd1" id="fechaEd2" >
+						  	<mat-datepicker-toggle matSuffix [for]="pickerEd2"></mat-datepicker-toggle>
+						  	<mat-datepicker #pickerEd2 ></mat-datepicker> 
+						</div>
+				  		<div *ngIf="editando!=element.id">{{element.fecha_confronta|date:'short'}} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="nota">
+				  <mat-header-cell *matHeaderCellDef> NOTA </mat-header-cell>
+				  <mat-cell *matCellDef="let element" > 
+				  	<mat-form-field  *ngIf="editando==element.id">
+					    <input matInput required name="nota" id="nota"  [(ngModel)]="editable.nota">
+					</mat-form-field>
+				  	<div *ngIf="editando!=element.id">{{element.nota }} </div>
+				  </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="accion">
+				  <mat-header-cell *matHeaderCellDef> ACCCIÓN </mat-header-cell>
+				  <mat-cell *matCellDef="let element"> 
+				  	<button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="eliminar(element)">delete_forever</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="iniciarEdicion(element)">edit</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="guardarEdicion(element)">save</mat-icon>
+					 </button>
+					<button mat-icon-button color="primary" *ngIf="editando==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="cancelarEdicion(element)">cancel</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editando!=element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="detalle(element)">view_list</mat-icon>
+					 </button>
+				  </mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="cdInventario"></mat-header-row>
+		        <mat-row *matRowDef="let row; columns: cdInventario;" (click)="seleccionado(row)"></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+			           [pageSize]="5"
+			           [showFirstLastButtons]="true">
+			</mat-paginator>  
+		</div>
+	</div>	
+</div>
+ 
+ <app-detalle-inventario [idinventario]="idinv"
+ 	 	*ngIf="modoDetalle"
+ 	 	(terminar)="terminar($event)">
+ 	 	
+ </app-detalle-inventario>

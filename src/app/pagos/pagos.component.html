@@ -41,11 +41,11 @@
 				<ng-container matColumnDef="fecha">
 				  <mat-header-cell *matHeaderCellDef> FECHA </mat-header-cell>
 				  <mat-cell *matCellDef="let element"> 
-				   <mat-form-field *ngIf="editando==element.id">
+				   <div *ngIf="editando==element.id" fxLayout="row" fxLayoutAlign="space-around">
 					  <input matInput required [matDatepicker]="picker2" placeholder="día" [(ngModel)]="fechaEdicion" name="fechaEdicion" id="fechaEdicion" >
 					  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
 					  <mat-datepicker #picker2 ></mat-datepicker> 
-					</mat-form-field>
+					</div>
 				  	<div *ngIf="editando!=element.id">{{element.fecha|date:'short'}} </div>
 				  </mat-cell>
 				</ng-container>
@@ -53,7 +53,7 @@
 				  <mat-header-cell *matHeaderCellDef> MONTO </mat-header-cell>
 				  <mat-cell *matCellDef="let element" > 
 				  	<mat-form-field  *ngIf="editando==element.id">
-					    <input matInput required name="monto" id="monto" placeholder="Monto" value="element.monto" type="number" [(ngModel)]="montoEdicion">
+					    <input matInput required name="monto" id="monto" value="element.monto" type="number" [(ngModel)]="montoEdicion">
 					</mat-form-field>
 				  	<div *ngIf="editando!=element.id">{{element.monto | currency:'':'symbol':'.2-2'}} </div>
 				  </mat-cell>
@@ -62,7 +62,7 @@
 				  <mat-header-cell *matHeaderCellDef> NOTA </mat-header-cell>
 				  <mat-cell *matCellDef="let element" > 
 				  	<mat-form-field  *ngIf="editando==element.id">
-					    <input matInput required name="nota" id="nota" placeholder="Nota" value="element.nota"  [(ngModel)]="notaEdicion">
+					    <input matInput required name="nota" id="nota" value="element.nota"  [(ngModel)]="notaEdicion">
 					</mat-form-field>
 				  	<div *ngIf="editando!=element.id">{{element.nota }} </div>
 				  </mat-cell>

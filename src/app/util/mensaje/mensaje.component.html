@@ -1,0 +1,13 @@
+<div fxLayout="column"  >
+	<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center" >
+	  <span>{{titulo}}</span>
+	  <button mat-icon-button (click)="cancelar()">
+	    <mat-icon >close</mat-icon>
+	  </button>
+	</mat-toolbar>
+	<mat-card >{{mensaje}}</mat-card>
+	<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+	  <button mat-raised-button color="primary" (click)="aceptar()">Aceptar</button>
+	  <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+	</mat-toolbar>
+</div>
