@@ -1,5 +1,5 @@
 <div fxLayout="column" flexLaoutAlign="space-around centor">
-	<div fxLayout="row" fxLayoutAlign="space-around centor" >
+	<div fxLayout="row" fxLayoutAlign="space-around centor" class="marco" >
 		<form (ngSubmit)="agregar(frm)" #frm="ngForm"  fxLayout="row" fxLayoutAlign="space-around centor" fxFlex="80" class="mNuevo">
 			<mat-form-field fxFlex="60">
 				<mat-select placeholder="Tipo" name="producto"  [(ngModel)]="producto" [disabled]="modoEdicion">
@@ -102,7 +102,7 @@
 		        <mat-row *matRowDef="let row; columns: cdInventario;" (click)="seleccionado(row)"></mat-row>
 			</mat-table>
 			<mat-paginator #paginator
-			           [pageSize]="10"
+			           pageSize="5"
 			           [showFirstLastButtons]="true">
 			</mat-paginator>  
 		</div>

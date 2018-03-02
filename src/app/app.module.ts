@@ -34,7 +34,7 @@ import { TipoProducto }            from './util/tipo-producto.pipe';
     AppComponent,
     InicioComponent,
     PagosComponent, Inventario, DetalleInventario,
-    TipoPago, TipoProducto
+    TipoPago, TipoProducto,
     Mensaje
   ],
   imports: [
