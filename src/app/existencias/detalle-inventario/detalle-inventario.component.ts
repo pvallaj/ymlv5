@@ -48,10 +48,21 @@ export class DetalleInventario implements OnInit {
 
     public producto:number;
 
-  constructor(private afa:AngularFirestore
+    constructor(private afa:AngularFirestore
                 ,public cs:CatalogosService
                 ,private dlg:MatDialog) { 
          
+    }
+
+    public modificado:DetalleInventarioId={
+      id:'',
+      id_producto:0,
+      almacen:0,
+      vitrina:0,
+      local:0,
+      existencia_anterior:0,
+      consolidado:0,
+      ventas:0
     }
 
     public recarga(){
@@ -72,6 +83,7 @@ export class DetalleInventario implements OnInit {
             console.log(this.dsInventario.data);
             this.editando="";
             this.modoEdicion=false;
+            this.modificado.id='';
           },
           err=>{
             console.log("Error");
@@ -85,7 +97,7 @@ export class DetalleInventario implements OnInit {
   }
   agregar(elemento) {
       let nuevo={
-        id_producto:this.producto,
+      id_producto:this.producto,
 	  	almacen:0,
 	  	vitrina:0,
 	  	local:0,
@@ -108,9 +120,40 @@ export class DetalleInventario implements OnInit {
           this.inventarioColl.doc('/'+elemento.id).delete();
       });
   }
+  iniciarEdicion(e:any){
+    this.modoEdicion=true;
+    this.modificado={
+      id:                 e.id,
+      id_producto:        e.id_producto,
+      almacen:            e.almacen,
+      vitrina:            e.vitrina,
+      local:              e.local,
+      existencia_anterior:e.existencia_anterior,
+      consolidado:        e.consolidado,
+      ventas:             e.ventas
+    }
+  }
+  guardarEdicion(){
+    console.log("Guardar registro");
+    console.log(this.modificado as DetalleInventarioReg);
+    this.modoEdicion=false;
+    this.inventarioColl.doc('/'+this.modificado.id).set({
+      id_producto:this.modificado.id_producto,
+      almacen:this.modificado.almacen,
+      vitrina:this.modificado.vitrina,
+      local:this.modificado.local,
+      existencia_anterior:this.modificado.existencia_anterior,
+      consolidado:this.modificado.consolidado,
+      ventas:this.modificado.ventas
+    });
+  }
+  cancelarEdicion(){
+    this.terminar.emit("edicion terminada");
+    this.modoEdicion=false;
+  }
 
   terminarEdicion(){
-  	this.terminar.emit("edicion terminada");
+    this.terminar.emit("Terminad edicion.");
   }
 
 }
