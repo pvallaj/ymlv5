@@ -8,6 +8,6 @@
 	<mat-card >{{mensaje}}</mat-card>
 	<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
 	  <button mat-raised-button color="primary" (click)="aceptar()">Aceptar</button>
-	  <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+	  <button mat-raised-button color="warn" (click)="cancelar()" *ngIf="tipo==1">Cancelar</button>
 	</mat-toolbar>
 </div>

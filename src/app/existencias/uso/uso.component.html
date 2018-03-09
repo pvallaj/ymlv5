@@ -1,0 +1,88 @@
+<div fxLayout="column" flexLaoutAlign="space-around centor">
+	<div fxLayout="row" fxLayoutAlign="space-around centor" class="marco" >
+		<form (ngSubmit)="agregar(frm)" #frm="ngForm"  fxLayout="row" fxLayoutAlign="space-around centor" fxFlex="80" class="mNuevo">
+			<mat-form-field fxFlex="30">
+				<mat-select placeholder="Tipo" name="producto"  [(ngModel)]="nuevo.id_producto" [disabled]="modoEdicion">
+				    <mat-option required  *ngFor="let tp of cs.cProductos" [value]="tp.id">
+				      {{ tp.descripcion }}
+				    </mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field fxFlex="15">
+				<input matInput required [matDatepicker]="picker" placeholder="Fecha:" [(ngModel)]="nuevo.fecha" name="fecha_confronta" id="fecha_confronta" (dateChange)="cambioFecha($event.value)">
+			  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			  <mat-datepicker #picker ></mat-datepicker>
+			</mat-form-field >
+			<mat-form-field  fxFlex="15">
+			    <input matInput placeholder="Cantidad:" required name="cantidad" id="cantidad"  [(ngModel)]="nuevo.cantidad">
+			</mat-form-field>
+			<mat-form-field  fxFlex="15">
+			    <input matInput placeholder="Nota:" required name="nota" id="nota"  [(ngModel)]="nuevo.nota">
+			</mat-form-field>
+			<button mat-raised-button color="primary" [disabled]="modoEdicion" fxFlex="10">Agregar</button>
+			
+		</form>
+	</div>
+	
+	<div  fxLayout="row" fxLayoutAlign="space-around centor">
+		<div fxFlex *ngIf="dsUso" fxFlex="80">
+			<mat-table #table [dataSource]="dsUso">
+				<ng-container matColumnDef="id_producto">
+				  <mat-header-cell *matHeaderCellDef fxFlex> Producto </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" fxFlex> 
+					  	{{element.id_producto | tipoProducto}}
+				  </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="cantidad">
+				  <mat-header-cell *matHeaderCellDef fxFlex> Cantidad </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" fxFlex> 
+				  		<mat-form-field  *ngIf="editable.id==element.id">
+					    	<input matInput required name="cantidad" id="cantidad"  [(ngModel)]="editable.cantidad">
+						</mat-form-field>
+					  	<div *ngIf="editable.id!=element.id">{{element.cantidad }} </div>
+				  </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="nota">
+				  <mat-header-cell *matHeaderCellDef fxFlex> Nota </mat-header-cell>
+				  	<mat-cell *matCellDef="let element" fxFlex> 
+				  		<mat-form-field  *ngIf="editable.id==element.id">
+					    	<input matInput required name="nota" id="nota"  [(ngModel)]="editable.nota">
+						</mat-form-field>
+					  	<div *ngIf="editable.id!=element.id">{{element.nota }} </div>
+				  </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="accion">
+				  <mat-header-cell *matHeaderCellDef fxFlex="100px"> Acción </mat-header-cell>
+				  <mat-cell *matCellDef="let element" fxFlex="100px"> 
+				  	<button mat-icon-button color="primary" *ngIf="editable.id!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="eliminar(element)">delete_forever</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editable.id!=element.id" >
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="iniciarEdicion(element)">edit</mat-icon>
+					 </button>
+					 <button mat-icon-button color="primary" *ngIf="editable.id==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="guardarEdicion(element)">save</mat-icon>
+					 </button>
+					<button mat-icon-button color="primary" *ngIf="editable.id==element.id">
+					    <mat-icon aria-label="Example icon-button with a heart icon"
+					    	(click)="cancelarEdicion(element)">cancel</mat-icon>
+					 </button>
+				  </mat-cell>
+				</ng-container>
+				<mat-header-row *matHeaderRowDef="cdUso"></mat-header-row>
+		        <mat-row *matRowDef="let row; columns: cdUso;" ></mat-row>
+			</mat-table>
+			<mat-paginator #paginator
+			           pageSize="5"
+			           [showFirstLastButtons]="true">
+			</mat-paginator>  
+		</div>
+	</div>	
+</div>
+  

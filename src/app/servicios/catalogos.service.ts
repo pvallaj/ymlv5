@@ -20,19 +20,39 @@ export class CatalogosService {
 	}
 	cargarCatalogo(catalogo:string[]){
 		this.catalogos=catalogo;
-		this.rsCatalogo=this.af.collection(this.catalogos[this.idx], ref=>ref.orderBy('descripcion','asc')).valueChanges();
-	    this.sus=this.rsCatalogo.subscribe(
-	      (resp)=>this.catalogosResp(resp),
-	      err=>this.catalogosErr(err)
-	    );
+		for(;this.idx<this.catalogos.length;this.idx++){
+			if(localStorage.getItem(this.catalogos[this.idx])!=null){
+				switch (this.catalogos[this.idx]) {
+			 		case "t_pago":
+			 			this.cPagos=JSON.parse(localStorage.getItem(this.catalogos[this.idx]));
+			 			console.log("t_pago por local");
+			 			break;
+			 		case "producto":
+			 			this.cProductos=JSON.parse(localStorage.getItem(this.catalogos[this.idx]));
+			 			console.log("productos por local");
+			 			break;
+	 			}
+			}else{
+				console.log("solicita: "+this.catalogos[this.idx]);
+				this.rsCatalogo=this.af.collection(this.catalogos[this.idx], ref=>ref.orderBy('descripcion','asc')).valueChanges();
+			    this.sus=this.rsCatalogo.subscribe(
+			      (resp)=>this.catalogosResp(resp),
+			      err=>this.catalogosErr(err)
+			    );
+			    return;
+			}
+		}
+		
 	}
 	 catalogosResp(resp){
 	 	switch (this.catalogos[this.idx]) {
 	 		case "t_pago":
 	 			this.cPagos=resp;
+	 			localStorage.setItem('t_pago',JSON.stringify(this.cPagos))
 	 			break;
 	 		case "producto":
 	 			this.cProductos=resp;
+	 			localStorage.setItem('producto',JSON.stringify(this.cProductos))
 	 			break;
 	 	}
 	    

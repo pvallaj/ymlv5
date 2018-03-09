@@ -25,15 +25,18 @@ import { AngularFirestore }   from 'angularfire2/firestore';
 import { PagosComponent }          from './pagos/pagos.component';
 import { Inventario }              from './existencias/inventario/inventario.component';
 import { DetalleInventario }       from './existencias/detalle-inventario/detalle-inventario.component';
+import { Uso }                     from './existencias/uso/uso.component';
 import { CatalogosService }        from './servicios/catalogos.service';
 import { TipoPago }                from './util/tipo-pago.pipe';
 import { TipoProducto }            from './util/tipo-producto.pipe';
+
+import { SeccionPrivada } from './util/seccion-privada';
 
 @NgModule({
   declarations: [
     AppComponent,
     InicioComponent,
-    PagosComponent, Inventario, DetalleInventario,
+    PagosComponent, Inventario, DetalleInventario, Uso,
     TipoPago, TipoProducto,
     Mensaje
   ],
@@ -43,14 +46,15 @@ import { TipoProducto }            from './util/tipo-producto.pipe';
     RouterModule.forRoot([
             { path: '',                  component: InicioComponent  },
             { path: 'inicio',            component: InicioComponent },
-            { path: 'pagos',             component: PagosComponent },
-            { path: 'inventario',        component: Inventario },
-            { path: 'detinventario',     component: DetalleInventario }
+            { path: 'pagos',             component: PagosComponent,      canActivate:[SeccionPrivada] , data:{ruta:'pagos'}         },
+            { path: 'inventario',        component: Inventario,          canActivate:[SeccionPrivada] , data:{ruta:'inventario'}    },
+            { path: 'detinventario',     component: DetalleInventario,   canActivate:[SeccionPrivada] , data:{ruta:'detinventario'} },
+            { path: 'materialUso',       component: Uso ,                canActivate:[SeccionPrivada],  data:{ruta:'materialUso'}   }
            /* { path: 'nomina',            component: NominaComponent ,   canActivate:[Privada]},*/
           ])
   ],
   providers: [
-     AngularFirestore, CatalogosService
+     SeccionPrivada, AngularFirestore, CatalogosService
   ],
   bootstrap: [AppComponent],
   entryComponents:[Mensaje]

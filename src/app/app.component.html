@@ -9,13 +9,13 @@
     <mat-nav-list  *ngIf="su.estadoSesion=='Conectado'">
        <mat-list-item [routerLink]="['/pagos']"> Pagos</mat-list-item>
        <mat-list-item [routerLink]="['/inventario']"> Inventario</mat-list-item>
-       <mat-list-item [routerLink]="['/detinventario']"> Detalle</mat-list-item>
+       <mat-list-item [routerLink]="['/materialUso']"> Material en uso</mat-list-item>
     </mat-nav-list >
   </mat-sidenav>
 
   <mat-sidenav-content class="contenido">
     <mat-toolbar>
-      <span>Monitoreo</span>
+      <span>Yamel Texcoco </span>
       <p><button mat-button (click)="sidenav.toggle()">Menú</button></p>
     </mat-toolbar>
     <router-outlet></router-outlet>

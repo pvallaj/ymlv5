@@ -21,6 +21,7 @@ export class SesionUsuario{
   	private usuarioActivo:string="";
   	private tipoUsuario:string="";
     public estadoSesion:string="Desconectado";
+    public perfiles:any;
 
     private usuariosColl: AngularFirestoreCollection<Usuario>;
 
@@ -48,11 +49,13 @@ export class SesionUsuario{
 	}
 
 	obtRegistro(resp){
-	    console.log(resp);
+		console.log(resp);
+	    console.log(resp[0].perfil);
 	    this.estadoSesion='Conectado';
 	    if(!this.usuarioActivo)
 	    this.usuarioActivo=resp[0].nombre;
 	    this.tipoUsuario=resp[0].tipo;
+	    this.perfiles=resp[0].perfil;
 	}
 	obtRegistroError(err){
 	    console.log(err);
